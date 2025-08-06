@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = "./uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 ALLOWED_EXTENSIONS = {"rvt",}
 
 app = Flask(__name__)
@@ -28,4 +29,5 @@ def file_save():
         filename=secure_filename(file.filename)
         # note to secure filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return
+        return jsonify({"status": "success", "filename": filename})
+    return jsonify({"status": "success", "filename": filename})
